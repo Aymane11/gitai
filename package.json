@@ -1,6 +1,6 @@
 {
   "name": "@zackbraksa/gitai",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "license": "MIT",
   "description": "Let AI write your git commit messages.",
   "main": "src/index.js",
@@ -18,9 +18,13 @@
     "type": "git",
     "url": "git+https://github.com/zackbraksa/gitai.git"
   },
-  "keywords": ["git", "git commit", "ai", "cli"],
+  "keywords": [
+    "git",
+    "git commit",
+    "ai",
+    "cli"
+  ],
   "author": "zack braksa",
-
   "overrides": {
     "ajv": "^8.17.1",
     "whatwg-url": "^14.0.0"
