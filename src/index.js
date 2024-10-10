@@ -58,3 +58,5 @@ program
   })
 
 program.parse()
+
+module.exports = { getGitDiff }
