@@ -27,7 +27,6 @@
   "author": "Zakaria Braksa",
   "dependencies": {
     "openai": "^4.67.3",
-    "commander": "^12.1.0",
-    "standard": "^17.1.2"
+    "commander": "^12.1.0"
   }
 }
