@@ -9,9 +9,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "standard",
+    "lint": "standard --fix 'src/*.js'",
     "version": "git add -A",
-    "prerelease": "npm run lint && npm test",
+    "prerelease": "npm run lint",
     "release": "npm run prerelease && npm version patch && npm publish"
   },
   "repository": {
@@ -24,14 +24,10 @@
     "ai",
     "cli"
   ],
-  "author": "zack braksa",
-  "overrides": {
-    "ajv": "^8.17.1",
-    "whatwg-url": "^14.0.0"
-  },
+  "author": "Zakaria Braksa",
   "dependencies": {
     "openai": "^4.67.3",
     "commander": "^12.1.0",
-    "standard": "^17.1.0"
+    "standard": "^17.1.2"
   }
 }
