@@ -1,6 +1,7 @@
 {
   "name": "@zackbraksa/gitai",
-  "version": "1.0.0",
+  "version": "1.1.1",
+  "license": "MIT",
   "description": "Let AI write your git commit messages.",
   "main": "src/index.js",
   "bin": {
@@ -9,9 +10,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zackbraksa/gitai.git"
+  },
   "keywords": ["git", "git commit", "ai", "cli"],
   "author": "zack braksa",
-  "license": "MIT",
+
   "overrides": {
     "ajv": "^8.17.1",
     "whatwg-url": "^14.0.0"
