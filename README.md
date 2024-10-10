@@ -26,9 +26,13 @@ Set your OpenAI API key as an environment variable:
 export OPENAI_API_KEY=<your-api-key>
 ```
 
-Generate a commit message:
+Stage your changes and generate a commit message:
 
 ```bash
+# add files to be committed
+git add .
+
+# generate commit message
 gitai generate
 ```
 
