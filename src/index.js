@@ -67,10 +67,8 @@ function runCLI () {
   program.parse()
 }
 
-// Run the CLI if this file is being executed directly
-if (import.meta.url === import.meta.resolve(process.argv[1])) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   runCLI()
 }
 
-// Export the runCLI function for use in other files if needed
-export { program, runCLI }
+export { runCLI }
