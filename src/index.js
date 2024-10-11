@@ -2,6 +2,43 @@ import { execSync } from 'child_process'
 import { program } from 'commander'
 import { OpenAI } from 'openai'
 
+function runCLI () {
+  console.log('Thinking ...')
+  program
+    .name('generate')
+    .description('let AI write your git commit messages')
+    .option('-d, --debug', 'output extra debugging')
+    .option('-o, --offline', "don't make any request")
+    .action(main(program.opts()))
+
+  program.parse()
+}
+
+export function main (options) {
+  return async () => {
+    const diff = getGitDiff()
+
+    if (options.debug) {
+      console.log('diff', diff)
+    }
+
+    if (options.offline) {
+      console.log('offline mode, skipping request to OpenAI')
+      return
+    }
+
+    if (diff === '') {
+      console.log('Your diff are empty, stage your changes first.')
+      return
+    }
+
+    const client = createOpenAIClient(process.env.OPENAI_API_KEY)
+    const completion = await getCompletion(diff, client)
+
+    console.log('git commit -m', `"${completion.choices[0].message.content}"`)
+  }
+}
+
 export function getGitDiff (execSyncFn = execSync, cwd = process.cwd()) {
   try {
     const ignoredFiles = ['package-lock.json']
@@ -9,7 +46,7 @@ export function getGitDiff (execSyncFn = execSync, cwd = process.cwd()) {
       ? `-- . ${ignoredFiles.map((file) => `':!${file}'`).join(' ')}`
       : ''
     const cmd = `git diff --staged ${ignoreArg}`
-    const diff = execSyncFn(cmd, { cwd }).toString()
+    const diff = execSyncFn(cmd, { cwd }).toString().trim()
     return diff
   } catch (error) {
     console.warn('Warning: Unable to get git diff. Are you in a git repository with staged changes?')
@@ -32,42 +69,6 @@ export async function getCompletion (diff, openAIClient) {
 
 export function createOpenAIClient (apiKey) {
   return new OpenAI({ apiKey })
-}
-
-export function main (options) {
-  return async () => {
-    const diff = getGitDiff()
-
-    if (options.debug) {
-      console.log('diff', diff)
-    }
-
-    if (options.offline) {
-      console.log('offline mode, skipping request')
-      return
-    }
-
-    const client = createOpenAIClient(process.env.OPENAI_API_KEY)
-    const completion = await getCompletion(diff, client)
-
-    console.log('git commit -m', `"${completion.choices[0].message.content}"`)
-  }
-}
-
-function runCLI () {
-  console.log('Thinking ...')
-  program
-    .name('generate')
-    .description('let AI write your git commit messages')
-    .option('-d, --debug', 'output extra debugging')
-    .option('-o, --offline', "don't make any request")
-    .action(main(program.opts()))
-
-  program.parse()
-}
-
-if (import.meta.url === `file://${process.argv[1]}`) {
-  runCLI()
 }
 
 export { runCLI }
