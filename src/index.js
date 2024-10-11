@@ -9,7 +9,6 @@ export function getGitDiff (execSyncFn = execSync, cwd = process.cwd()) {
       ? `-- . ${ignoredFiles.map((file) => `':!${file}'`).join(' ')}`
       : ''
     const cmd = `git diff --staged ${ignoreArg}`
-    console.log('cmd', cmd)
     const diff = execSyncFn(cmd, { cwd }).toString()
     return diff
   } catch (error) {
@@ -26,7 +25,7 @@ export async function getCompletion (diff, openAIClient) {
     model: 'gpt-4o-mini'
   })
 
-  console.log('completion', completion)
+  // console.log('completion', completion)
 
   return completion
 }
@@ -56,7 +55,7 @@ export function main (options) {
 }
 
 function runCLI () {
-  console.log('Running gitai ...')
+  console.log('Thinking ...')
   program
     .name('generate')
     .description('let AI write your git commit messages')
