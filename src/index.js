@@ -32,7 +32,7 @@ export function main (options) {
       return
     }
 
-    const client = createOpenAIClient(process.env.OPENAI_API_KEY)
+    const client = createOpenAIClient();
     const completion = await getCompletion(diff, client)
 
     console.log('git commit -m', `"${completion.choices[0].message.content}"`)
@@ -67,8 +67,8 @@ export async function getCompletion (diff, openAIClient) {
   return completion
 }
 
-export function createOpenAIClient (apiKey) {
-  return new OpenAI({ apiKey })
+export function createOpenAIClient() {
+  return new OpenAI()
 }
 
 export { runCLI }
