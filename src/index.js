@@ -1,8 +1,9 @@
 import { execSync } from 'child_process'
 import { program } from 'commander'
 import { OpenAI } from 'openai'
+import { exit } from 'process'
 
-function runCLI () {
+function runCLI() {
   console.log('Thinking ...')
   program
     .name('generate')
@@ -14,8 +15,11 @@ function runCLI () {
   program.parse()
 }
 
-export function main (options) {
+export function main(options) {
   return async () => {
+    if (!isGitAvailable()) {
+      exit(1);
+    }
     const diff = getGitDiff()
 
     if (options.debug) {
@@ -34,12 +38,22 @@ export function main (options) {
 
     const client = createOpenAIClient();
     const completion = await getCompletion(diff, client)
-
-    console.log('git commit -m', `"${completion.choices[0].message.content}"`)
+    const command = `git commit -m ${completion.choices[0].message.content}`
+    console.log(command)
   }
 }
 
-export function getGitDiff (execSyncFn = execSync, cwd = process.cwd()) {
+export function isGitAvailable(execSyncFn = execSync) {
+  try {
+    execSyncFn('git --version');
+    return true;
+  } catch (error) {
+    console.warn("git not found, to install it see https://git-scm.com/downloads")
+    return false;
+  }
+}
+
+export function getGitDiff(execSyncFn = execSync, cwd = process.cwd()) {
   try {
     const ignoredFiles = ['package-lock.json']
     const ignoreArg = ignoredFiles.length
