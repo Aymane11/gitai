@@ -68,17 +68,14 @@ export function getGitDiff(execSyncFn = execSync, cwd = process.cwd()) {
   }
 }
 
-export async function getCompletion (diff, openAIClient) {
-  const content = `Generate a concise git commit message for the following diff:\n${diff}`
+export async function getCompletion(diff, openAIClient) {
+  const content = `Generate a single concise and accurate git commit message for the following git diff:\n${diff}\nGenerate commit message only, without any backslashes or explanations, and make sure the diff reflects the changes in the provided diff`
 
-  const completion = await openAIClient.chat.completions.create({
+  return await openAIClient.chat.completions.create({
     messages: [{ role: 'user', content }],
-    model: 'gpt-4o-mini'
+    model: 'gpt-4o-mini',
+    temperature: 0.4
   })
-
-  // console.log('completion', completion)
-
-  return completion
 }
 
 export function createOpenAIClient() {
